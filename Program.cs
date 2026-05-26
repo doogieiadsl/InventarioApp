@@ -3,17 +3,21 @@
 // Estado: Mensaje de bienvenida
 // ============================================================
 
-Console.WriteLine("==========================================");
+using System;
+using System.Reflection;
+
+
+/* Console.WriteLine("==========================================");
 Console.WriteLine("    SISTEMA DE GESTIÓN DE INVENTARIO      ");
 Console.WriteLine("==========================================");
 Console.WriteLine();
-Console.WriteLine($"Versión: 1.0.0");
+Console.WriteLine($"Versión: {version}");
 Console.WriteLine($"Plataforma: {Environment.OSVersion}");
 Console.WriteLine($".NET Version: {Environment.Version}");
 Console.WriteLine();
 Console.WriteLine("Estructura del proyecto");
 Console.WriteLine("     InventarioApp/");
-Console.WriteLine("         |-- Program.cs");
+Console.WriteLine("  e,f,b,c,d,a       |-- Program.cs");
 Console.WriteLine("         |-- InventarioApp.csproj");
 Console.WriteLine("         |-- .gitignore");
 Console.WriteLine("         |-- README.d");
@@ -23,4 +27,191 @@ Console.WriteLine("Configuracion .csproject");
 Console.WriteLine("Carpeta src/ creada");
 Console.WriteLine("Metadatos Configurados");
 Console.WriteLine();
-Console.WriteLine("Proximo Paso: Checkpoint");
+Console.WriteLine("Proximo Paso: Checkpoint"); */
+
+//Declaracion de variables
+
+var assembly = Assembly.GetExecutingAssembly();
+var version = assembly.GetName().Version;
+int cantidadProductos = 0; 
+decimal valorTotalDelinventario = 0.00m;
+bool SistemaActivo = true;
+string nombreSistema = "Sistema de Gestion de Inventarios";
+bool ValidaPrecio = true;
+
+//Procedimientos//
+void MostrarAyuda()
+{
+    Console.WriteLine("USO: InventarioApp [comando] [opciones]");
+    Console.WriteLine();
+    Console.WriteLine("COMANDOS:");
+    Console.WriteLine("  --help, -h      Muestra esta ayuda");
+    Console.WriteLine("  --version, -v   Muestra la version del programa");
+    Console.WriteLine();
+    Console.WriteLine("EJEMPLOS:");
+    Console.WriteLine(" dotnet run -- --help");
+    Console.WriteLine(" dotnet run -- --version");
+}
+void MostrarBanner()
+{
+    Console.WriteLine("╔══════════════════════════════════════╗");
+    Console.WriteLine("║   SISTEMA DE GESTIÓN DE INVENTARIO   ║");
+    Console.WriteLine("╚══════════════════════════════════════╝");
+    Console.WriteLine();
+    Console.WriteLine();
+}
+
+// Ejecucion del Programa
+
+MostrarBanner();
+Console.WriteLine("Estado del Sistema");
+Console.WriteLine($"Nombre: {nombreSistema}");
+Console.WriteLine($"Productos registrados: {cantidadProductos}");
+Console.WriteLine($"Valor total del Inventario: {valorTotalDelinventario:N2}");
+Console.WriteLine($"Sistema Activo: {SistemaActivo}");
+
+//EmpiezaNullable
+
+Console.WriteLine("Menu de aplicacion inventario");
+Console.WriteLine("Opcion 1 : listar");
+Console.WriteLine("Opcion 2 : agregar");
+Console.WriteLine("Opcion 3 : buscar");
+Console.WriteLine("Opcion 4 : salir");
+Console.WriteLine("Que desea hacer");
+Console.WriteLine();
+
+while (SistemaActivo)
+{
+    Console.WriteLine("Inventario");
+    Console.WriteLine("Elige una opcion");
+    string? Entrada = Console.ReadLine();
+
+    //Empieza switch
+    string comando = Entrada?.Trim().ToLower() ?? "salir";
+    switch (comando)
+    {
+        case "listar":
+            listar();
+            break;
+        case "agregar":
+            agregar();
+            break;
+        case "buscar":
+            break;
+        case "salir":
+            salir();
+            break;
+        default:
+            break;
+    }
+}
+void listar()
+{
+    Console.WriteLine($"Cantidad de productos del imventario: {cantidadProductos}");
+    Console.WriteLine($"Valor total del Inventario: {valorTotalDelinventario:N2}");
+}
+void agregar()
+{
+    Console.Write("Ingresa el Numero de productos: ");
+    string? Numproducto = Console.ReadLine();
+
+    if (string.IsNullOrWhiteSpace(Numproducto) || Numproducto.ToLower() == "salir")
+    {
+        Console.WriteLine("Caracter invalido");
+    }
+    else
+    {
+        if (int.TryParse(Numproducto, out int cantidad))
+        {
+            cantidadProductos = cantidad;
+            Console.Write($"{cantidadProductos} Producto(s) Agregado(s)"); //Ahora forzamos a ingresar el precio
+            while (ValidaPrecio)
+            {
+                Console.Write("Ingresa el Precio del  producto: ");
+                string? PrecioProducto = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(PrecioProducto) || PrecioProducto.ToLower() == "salir")
+                {
+                    Console.WriteLine("Precio invalido");
+                }
+                else
+                {
+                    if (decimal.TryParse(PrecioProducto, out decimal precio))
+                    {
+                        valorTotalDelinventario = cantidadProductos * precio;
+                        Console.WriteLine($"El Precio(s)  {PrecioProducto:N2} se Agrego a los {cantidadProductos} productos "); //Precio Valido
+                        Console.WriteLine($"El valor total del inventario es   {valorTotalDelinventario:N2}");
+                        ValidaPrecio = false;
+                    }
+                }
+            }
+        }
+    }
+
+}
+void salir()
+{
+    Console.WriteLine("Saliendo del Inventario, Hasta luego");
+    SistemaActivo = false;
+}
+////Captura de Cantidad
+//Console.Write("Ingrese una cantidad: ");
+//string? entradaCantidad = Console.ReadLine();
+//if (int.TryParse(entradaCantidad, out int cantidad))
+//{
+//    Console.WriteLine($"Cantidad Valida: {cantidad}");
+//    cantidadProductos = cantidad;
+//}
+//else
+//{
+//    Console.WriteLine("Error, debes ingresar un entero");
+//}
+////Captura de Precio
+//Console.Write("Ingrese un precio: ");
+//string? entradaPrecio = Console.ReadLine();
+//if (decimal.TryParse(entradaPrecio, out decimal precio))
+//{
+//    Console.WriteLine($"Precio Validado: {precio:N2}");
+//    valorTotalDelinventario = cantidadProductos * precio;
+//    Console.WriteLine($"El Valor Total del Inventario es : {valorTotalDelinventario}");
+//}
+//else
+//{
+//    Console.WriteLine("Error, debes ingresar un decimal");
+//}
+
+
+// Modo interactivo si no se tienen argumentos
+
+Console.Write("Ingrese un comando o ingrese salir para terminar: ");
+string? entrada = Console.ReadLine();
+
+if (string.IsNullOrWhiteSpace(entrada) || entrada.ToLower() == "salir")
+{
+    Console.WriteLine("Saliendo del programa...");
+    Environment.Exit(0);
+}
+if (args.Length > 0)
+{
+    switch (args[0].ToLower())
+    {
+        case "--help":
+            MostrarAyuda();
+            Environment.Exit(0);
+            break;
+
+        case "--version":
+            Console.WriteLine($"InventariosApp v[{version}]");
+            Environment.Exit(0);
+            break;
+
+        default:
+            Console.WriteLine($"Error: comando desconociso: [{args[0]}]");
+            Console.WriteLine("Use --help para ver los comando disponibles");
+            Environment.Exit(1);
+            break;  
+    }
+}
+
+
+
