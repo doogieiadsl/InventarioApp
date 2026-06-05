@@ -35,6 +35,7 @@ public class InMemoryProductoRepositories : IProductoRepository
 		existente.Estado = producto.Estado;
 		return true;
 	}
+	//5. Eliminar
 	public bool Eliminar(int id)
 	{ 
 		var producto = ObtenerPorId(id);
@@ -42,5 +43,62 @@ public class InMemoryProductoRepositories : IProductoRepository
 
 		return _productos.Remove(producto);
 	}
+	//6. Cantidad
 	public int Cantidad => _productos.Count;
+
+	//======== Busquedas con Where LINQ ==============
+	public IEnumerable<Producto> BuscarPorCategoria (CategoriaProducto categoria)
+	{
+		return _productos.Where(p => p.Categoria == categoria);
+	}
+	public IEnumerable<Producto> BuscarPorNombre(string nombre)
+	{
+        return _productos.Where(p => p.Nombre.Contains(nombre, StringComparison.OrdinalIgnoreCase));
+    }
+	public IEnumerable<Producto> BuscarPorRangoPrecio (decimal PrecioMinmo, decimal PrecioMaximo)
+	{
+		return _productos.Where(p => p.Precio >= PrecioMinmo && p.Precio <= PrecioMaximo);
+	}
+    //======== Busquedas con Select & Any ==============
+	public IEnumerable<string> ObtenerNombres()
+	{
+		return _productos.Select(p => p.Nombre);
+	}
+	public bool HayStockBajo()
+	{
+		return _productos.Any(p => p.Cantidad < 5);
+	}
+	// ============= Metodos de Ordenacion ========
+	public IEnumerable<Producto> ObtenerOrdenadosPorPrecio()
+	{
+		return _productos.OrderBy(p => p.Precio);
+	}
+	public IEnumerable<Producto> ObtenerTopPorPrecio(int cantidad)
+	{
+		return _productos.OrderByDescending(p => p.Precio).Take(cantidad);
+	}
+	// =========== GroupBy y conversion a Dictionary ======
+	public IEnumerable<IGrouping<CategoriaProducto, Producto>> AgruparPorCategoria()
+	{
+		return _productos.GroupBy(p => p.Categoria);
+	}
+	public Dictionary<CategoriaProducto, int> ContarPorCategoria()
+	{
+		return _productos //Genera List<Producto>
+			.GroupBy(p => p.Categoria) // Agrupa por Categoria
+			.ToDictionary(g => g.Key, g => g.Count()); //Realiza el conteo
+	}
+	// ====== Agregaciones Sum, Average y Maxby =========
+	public decimal ObtenerValorTotalInventario()
+	{
+		return _productos.Sum(p => p.ValorTotal);
+	}
+	public decimal ObtenerPrecioPromedio()
+	{
+		return _productos.Average(p => p.Precio);
+	}
+	public Producto? ObtenerProductoMasCaro()
+	{
+		return _productos.MaxBy(p => p.Precio);
+	}
 }
