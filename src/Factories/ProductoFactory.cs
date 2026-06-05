@@ -19,7 +19,7 @@ namespace InventarioApp.src.Factories
             // Validamos Precio
             if (precio < 0) throw new ArgumentOutOfRangeException("Precio no puede ser negativo", nameof(precio));
             // Validamos Cantidad
-            if (cantidad < 0) throw new ArgumentOutOfRangeException("Cantida no puede ser menor a cero", nameof(cantidad));
+            if (cantidad < 0) throw new ArgumentOutOfRangeException("Cantidad no puede ser menor a cero", nameof(cantidad));
 
             return new Producto //usamos el return regresando un nuevo obejeto ya con valor asigando a susu atributos
             {
