@@ -60,7 +60,7 @@ public class InMemoryProductoRepositories : IProductoRepository
 		return _productos.Where(p => p.Precio >= PrecioMinmo && p.Precio <= PrecioMaximo);
 	}
     //======== Busquedas con Select & Any ==============
-	public IEnumerable<string> ObtenerNombres()
+	public IEnumerable<String> ObtenerNombres()
 	{
 		return _productos.Select(p => p.Nombre);
 	}
@@ -95,10 +95,22 @@ public class InMemoryProductoRepositories : IProductoRepository
 	}
 	public decimal ObtenerPrecioPromedio()
 	{
+		if (_productos.Count == 0) return 0;
 		return _productos.Average(p => p.Precio);
 	}
 	public Producto? ObtenerProductoMasCaro()
 	{
 		return _productos.MaxBy(p => p.Precio);
 	}
+	public Dictionary<CategoriaProducto, decimal> ObtenerValoroPorCategoria()
+	{
+		return _productos //Listar Productos
+			.GroupBy(p => p.Categoria) //Agrupamos por categoria
+			.ToDictionary(g => g.Key, g => g.Sum(x => x.ValorTotal)); //Despues de Agrupar x categoria sumamos cada categoria  (Valor x categoria)
+	}
+	public IEnumerable<Producto> ObtenerStockBajo (int umbral = 5)
+	{
+		return _productos.Where (p => p.Cantidad <  umbral);
+	}
+
 }
