@@ -5,6 +5,13 @@
 
 using InventarioApp.src.Factories;
 
+var fileManager = new Filemanager();
+string contenido = ("Inventario Actualizado");
+fileManager.Escribir("inventario.txt", contenido);
+
+string leerContenido = fileManager.Leer("inventario.txt");
+Console.WriteLine(contenido); 
+
 
 Console.WriteLine("==========================================");
 Console.WriteLine("    SISTEMA DE GESTIÓN DE INVENTARIO      ");
