@@ -18,39 +18,65 @@ Console.WriteLine("    SISTEMA DE GESTIÓN DE INVENTARIO      ");
 Console.WriteLine("==========================================");
 Console.WriteLine();
 
-var almacenamiento = new JsonInventarioStorage();
 var productos = new List<Producto>
 {
-    new Producto
-    {
-        Id = 1,
-        Nombre = "Laptop",
-        Precio = 999.99m,
-        Cantidad = 10,
-        Categoria = CategoriaProducto.Ropa,
-        Estado = EstadoProducto.Activo
-    },
-    new Producto
-    {
-        Id = 2,
-        Nombre = "Camiseta",
-        Precio = 19.99m,
-        Cantidad = 50,
-        Estado = EstadoProducto.Activo
-    },
+    ProductoFactory.Crear("Laptop", 1200.00m, 3, CategoriaProducto.Electronica),
+    ProductoFactory.Crear("Camisa", 45.00m, 15, CategoriaProducto.Ropa),
+    ProductoFactory.Crear("Arroz", 12.00m, 50, CategoriaProducto.Alimentos),
+    ProductoFactory.Crear("Lampara", 35.00m, 2, CategoriaProducto.Hogar),
+    ProductoFactory.Crear("Balon", 25.00m, 8, CategoriaProducto.Deportes),
+    ProductoFactory.Crear("Mesa", 150.00m, 4, CategoriaProducto.Muebles)
 };
-string ruta = "inventario_test.json";
-almacenamiento.CrearBackup(ruta);
-almacenamiento.Guardar(productos, ruta);
 
-Console.WriteLine("Inventario guardado correctamente");
-var productosCargados = almacenamiento.Cargar(ruta);
-Console.WriteLine("Inventario cargado correctamente");
+var generador = new GeneradorReportes(productos);
 
-foreach (var p in productosCargados)
-{
-    Console.WriteLine($"Id: {p.Id}, Nombre: {p.Nombre}, Precio: {p.Precio}, Cantidad: {p.Cantidad}, Categoria: {p.Categoria}, Estado: {p.Estado}" );
-}
+Console.WriteLine(generador.GenerarResumen());
+Console.WriteLine();
+
+Console.WriteLine(generador.GenerarReporteStockBajo());
+Console.WriteLine();
+
+Console.WriteLine(generador.GenerarTopProductos());
+Console.WriteLine();
+
+Console.WriteLine(generador.ExportarCsv());
+Console.WriteLine();
+
+Console.WriteLine(generador.ExportarResumenJson());
+Console.WriteLine();
+//var almacenamiento = new JsonInventarioStorage();
+//var productos = new List<Producto>
+//{
+//    new Producto
+//    {
+//        Id = 1,
+//        Nombre = "Laptop",
+//        Precio = 999.99m,
+//        Cantidad = 10,
+//        Categoria = CategoriaProducto.Ropa,
+//        Estado = EstadoProducto.Activo
+//    },
+//    new Producto
+//    {
+//        Id = 2,
+//        Nombre = "Camiseta",
+//        Precio = 19.99m,
+//        Cantidad = 50,
+//        Estado = EstadoProducto.Activo
+//    },
+//};
+//string ruta = "inventario_test.json";
+//almacenamiento.CrearBackup(ruta);
+//almacenamiento.Guardar(productos, ruta);
+
+//Console.WriteLine("Inventario guardado correctamente");
+//var productosCargados = almacenamiento.Cargar(ruta);
+//Console.WriteLine("Inventario cargado correctamente");
+
+//foreach (var p in productosCargados)
+//{
+//    Console.WriteLine($"Id: {p.Id}, Nombre: {p.Nombre}, Precio: {p.Precio}, Cantidad: {p.Cantidad}, Categoria: {p.Categoria}, Estado: {p.Estado}" );
+//}
 
 
 

@@ -22,6 +22,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{B55A9734-CC3B-458D-9A65-D10A2D642955}"
 	ProjectSection(SolutionItems) = preProject
 		Filemanager.cs = Filemanager.cs
+		GeneradorReporte.cs = GeneradorReporte.cs
 		JsonInventarioStorage.cs = JsonInventarioStorage.cs
 	EndProjectSection
 EndProject
