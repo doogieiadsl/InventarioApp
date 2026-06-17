@@ -26,6 +26,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 		JsonInventarioStorage.cs = JsonInventarioStorage.cs
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{40A36608-51AF-4EF7-BF1D-13CA1BCD7B80}"
+	ProjectSection(SolutionItems) = preProject
+		InventarioServices.cs = InventarioServices.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
